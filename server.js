@@ -21,7 +21,7 @@ db.on("error",(err)=>{
 
 
 db.once('open',()=>{
-    console.log("Db connected")
+    console.log("Db connected,finally")
 })
 
 const app=express()
