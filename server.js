@@ -3,12 +3,17 @@ const mongoose=require("mongoose")
 const morgan=require("morgan")
 const bodyParser = require("body-parser")
 const cors=require('cors')
+const fs = require('fs');
 require('dotenv').config()
 
 
 
 const UserRoute=require("./routes/userRoutes")
 const ProjectBriefRoute=require("./routes/projectBriefRoutes")
+const documentUpload=require("./middleware/documentUpload")
+
+const multer = require("multer")
+const path = require("path")
 
 mongoose.connect("mongodb://localhost:27017/ucomdb",{useNewUrlParser:true,useunifiedTopology:true})
 
@@ -21,7 +26,7 @@ db.on("error",(err)=>{
 
 
 db.once('open',()=>{
-    console.log("Db connected,finally")
+    console.log("Db connected")
 })
 
 const app=express()
@@ -49,3 +54,24 @@ app.listen(PORT,()=>{
 app.use('/api/users',UserRoute)
 
 app.use('/api/projects',ProjectBriefRoute)
+
+
+//delete files
+
+app.delete('/test/delete/:filename', (req, res) => {
+    const filePath = path.join(__dirname, req.params.filename);
+    fs.unlink(filePath, err => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('An error occurred');
+        return;
+      }
+      res.send('File deleted successfully');
+    });
+  });
+
+  app.post('/test/upload', documentUpload.array('files'), (req, res) => {
+    res.send(req.files);
+  });
+  
+  

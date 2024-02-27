@@ -13,23 +13,16 @@ const ProjectFullIBListController=require('../controllers/projectSubControllers/
 
 //upload Documents
 
-router.post('/document/upload/',documentUpload.array('files[]'),(req,res)=>{
-    console.log(req.files)
-    const path=[]
-    req.files.forEach(file=>{
-        console.log(file)
-        path.push(file.path)
-    })
-    res.json({
-        message:"File uploaded Successfully",
-        data:path
-    })
+router.post('/document/upload/',documentUpload.array('files'),(req,res)=>{
+    res.send(req.files);
 })
 
 // For  main project
 // router.get('/',authenticate,UserController.index)
 router.get('/',ProjectBriefController.index)
 router.post('/add',ProjectBriefController.store)
+router.post('/update',ProjectBriefController.updateStore)
+router.post('/getmyprojects',ProjectBriefController.projectsById)
 
 
 //for  institute cruds

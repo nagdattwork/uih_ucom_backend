@@ -96,10 +96,11 @@ const projectBriefSchema=new Schema({
         title:String,
         description:String,
         objective:String,
-        project_manager:[{name:String}],
+        project_manager:[{type:Schema.Types.ObjectId,ref:'User'}],
         project_duration:String,
         // hw_sw_spp:[{type:Schema.Types.ObjectId,ref:'Hw_Sw_SppSchemas'}],
         hw_sw_spp:[hw_sw_spp_scheme,],
+       
 
         current_stage:String,
         ethics_irb_approval:ethics_irb_schema,
@@ -122,9 +123,9 @@ const projectBriefSchema=new Schema({
     },
     fi_funding:{
         fi_funding_status:fi_funding_status_object,
-        fi_uih_uii_funded_amount:String,
-        fi_uih_uii_funded_bu:String,
-        fi_who_funded:String
+        // fi_uih_uii_funded_amount:String,
+        // fi_uih_uii_funded_bu:String,
+        // fi_who_funded:String
 
         
     },
