@@ -51,9 +51,9 @@ app.listen(PORT,()=>{
 //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 //     next();
 //   });
-app.use('server/api/users',UserRoute)
+app.use('/api/users',UserRoute)
 
-app.use('server/api/projects',ProjectBriefRoute)
+app.use('/api/projects',ProjectBriefRoute)
 
 
 //delete files
