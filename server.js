@@ -34,8 +34,8 @@ app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.use(cors())
-app.use('/uploads',express.static('uploads'))
-app.use('/documents',express.static('documents'))
+app.use('server/uploads',express.static('uploads'))
+app.use('server/documents',express.static('documents'))
 
 // app.use(express.static(path.join(__dirname, './uploads')));
 const PORT=process.env.PORT
@@ -51,14 +51,14 @@ app.listen(PORT,()=>{
 //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 //     next();
 //   });
-app.use('/api/users',UserRoute)
+app.use('server/api/users',UserRoute)
 
-app.use('/api/projects',ProjectBriefRoute)
+app.use('server/api/projects',ProjectBriefRoute)
 
 
 //delete files
 
-app.delete('/test/delete/:filename', (req, res) => {
+app.delete('server/test/delete/:filename', (req, res) => {
     const filePath = path.join(__dirname, req.params.filename);
     fs.unlink(filePath, err => {
       if (err) {
@@ -70,7 +70,7 @@ app.delete('/test/delete/:filename', (req, res) => {
     });
   });
 
-  app.post('/test/upload', documentUpload.array('files'), (req, res) => {
+  app.post('server/test/upload', documentUpload.array('files'), (req, res) => {
     res.send(req.files);
   });
   
