@@ -17,6 +17,8 @@ const path = require("path")
 
 mongoose.connect("mongodb://localhost:27017/ucomdb",{useNewUrlParser:true,useunifiedTopology:true})
 
+const backendBase="/server/"
+// const backendBase="/server/"
 
 const db=mongoose.connection
 
@@ -34,8 +36,8 @@ app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.use(cors())
-app.use('/server/uploads',express.static('uploads'))
-app.use('/server/documents',express.static('documents'))
+app.use(backendBase+'uploads',express.static('uploads'))
+app.use(backendBase+'/server/documents',express.static('documents'))
 
 // app.use(express.static(path.join(__dirname, './uploads')));
 const PORT=process.env.PORT
@@ -51,14 +53,14 @@ app.listen(PORT,()=>{
 //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 //     next();
 //   });
-app.use('/server/api/users',UserRoute)
+app.use(backendBase+'api/users',UserRoute)
 
-app.use('/server/api/projects',ProjectBriefRoute)
+app.use(backendBase+'api/projects',ProjectBriefRoute)
 
 
 //delete files
 
-app.delete('/server/test/delete/:filename', (req, res) => {
+app.delete(backendBase+'test/delete/:filename', (req, res) => {
     const filePath = path.join(__dirname, req.params.filename);
     fs.unlink(filePath, err => {
       if (err) {
@@ -70,7 +72,7 @@ app.delete('/server/test/delete/:filename', (req, res) => {
     });
   });
 
-  app.post('/test/upload', documentUpload.array('files'), (req, res) => {
+  app.post(backendBase+'/test/upload', documentUpload.array('files'), (req, res) => {
     res.send(req.files);
   });
   
