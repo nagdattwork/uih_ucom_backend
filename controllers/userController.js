@@ -18,6 +18,7 @@ const index=(req,res,next)=>{
 
 // Store a user
 const store=(req,res,next)=>{
+    console.log(req.body)
   bcrypt.hash(req.body.password,10,(err,hashedPass)=>{
     if(err){
         res.json({error:err})
