@@ -27,7 +27,12 @@ const index=(req,res,next)=>{
 
 const projectsById=(req,res,next)=>{
     console.log({_id:req.body.id})
-    ProjectBrief.find({owner:req.body.id})
+    let condition={}
+
+    if(req.body?.type==='basic'){
+        condition={owner:req.body.id}
+    }
+    ProjectBrief.find(condition)
     .populate('project_title.hw_sw_spp')
     .populate('project_title.project_manager')
     .populate('project_title.milestone_deliverables')
@@ -35,6 +40,8 @@ const projectsById=(req,res,next)=>{
     .populate('customer_details.pi_details')
     .populate('system.full_ib_list')
     .populate('system.systems')
+    .populate('owner')
+    .populate('updated_by')
     .then((response)=>{
         console.log(response)
         res.json({
@@ -182,7 +189,8 @@ const updateStore=(req,res,next)=>{
             systems:[],
             full_ib_list:[]
         },
-        owner: req.body?.owner
+        owner: req.body?.owner,
+        updated_by: req.body?.updated_by,
     }
 
     //Project Titles
@@ -233,31 +241,21 @@ req.body?.system?.full_ib_list?.forEach(full_ib_list => {
             err
         })
     });
-//     let projectBrief=new ProjectBrief({
-        
-        
-        
 
-//     })
-
-
-// req.body?.system?.uih_service_engineer?.forEach(uih_service_engineer => {
-//     projectBrief.system.uih_service_engineer.push(uih_service_engineer)
-// });
-//     projectBrief.save()
-//     .then((response)=>{
-//         res.json({
-//             message:"Project Added Successfully"
-//         })
-//     })
-//     .catch((err)=>{
-//         res.json({
-//             message:err
-//         })
-//     })
 }
 
 
+//delete Project
+
+const deleteProjectById = (req, res,next) => {
+
+        ProjectBrief.findByIdAndDelete(req.body.projectId).then((result) => {
+            res.json({
+                result: "Deleted Successfully"
+            })
+        })
+
+}
 
 
 //Dashboard- Groupping by project status
@@ -266,5 +264,5 @@ req.body?.system?.full_ib_list?.forEach(full_ib_list => {
 
 
 module.exports={
-    index,store,updateStore,projectsById
+    index,store,updateStore,projectsById,deleteProjectById
 }

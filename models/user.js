@@ -18,10 +18,7 @@ const userSchema=new Schema({
         type:String,
         required:true
     },
-    roles:{
-        type:Number,
-        required:true
-    },
+  
     image:{
         type:String,
     },
@@ -38,6 +35,14 @@ const userSchema=new Schema({
         required:true
     },
     country:{
+        type:String,
+        required:true
+    },
+    approved:{
+        type:Boolean,
+        required:true
+    },
+    userType:{
         type:String,
         required:true
     },

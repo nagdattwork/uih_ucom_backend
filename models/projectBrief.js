@@ -135,7 +135,8 @@ const projectBriefSchema=new Schema({
         signed_agreement:String,
         others:String
     },
-    owner:{type:Schema.Types.ObjectId,ref:'User'}
+    owner:{type:Schema.Types.ObjectId,ref:'User'},
+    updated_by:{type:Schema.Types.ObjectId,ref:'User'},
   
 },{timestamps:true})
 

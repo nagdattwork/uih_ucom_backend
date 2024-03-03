@@ -23,6 +23,7 @@ router.get('/',ProjectBriefController.index)
 router.post('/add',ProjectBriefController.store)
 router.post('/update',ProjectBriefController.updateStore)
 router.post('/getmyprojects',ProjectBriefController.projectsById)
+router.post('/deleteprojects',ProjectBriefController.deleteProjectById)
 
 
 //for  institute cruds

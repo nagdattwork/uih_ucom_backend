@@ -17,8 +17,8 @@ const path = require("path")
 
 mongoose.connect("mongodb://localhost:27017/ucomdb",{useNewUrlParser:true,useunifiedTopology:true})
 
-const backendBase="/server/"
 // const backendBase="/server/"
+const backendBase="/"
 
 const db=mongoose.connection
 
@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.use(cors())
 app.use(backendBase+'uploads',express.static('uploads'))
-app.use(backendBase+'/server/documents',express.static('documents'))
+app.use(backendBase+'documents',express.static('documents'))
 
 // app.use(express.static(path.join(__dirname, './uploads')));
 const PORT=process.env.PORT
