@@ -50,4 +50,10 @@ router.post('/systemdetails/add',ProjectSystemsDataController.store)
 router.get('/fulliblists',ProjectFullIBListController.index)
 router.post('/fulliblists/add',ProjectFullIBListController.store)
 
+
+//Dashboard controller
+router.get('/currentstagedash',ProjectBriefController.currentStageDashes)
+router.get('/documentsdash',ProjectBriefController.documentsPercentDashes)
+
+
 module.exports=router
