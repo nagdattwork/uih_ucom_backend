@@ -5,8 +5,9 @@ var storage= multer.diskStorage({
         cb(null,'documents/')
     },
     filename:function(req,file,cb){
+        console.log(file)
         let ext=path.extname(file.originalname)
-        cb(null,Date.now()+ext)
+        cb(null,Date.now()+"."+file.originalname.split(".")[0]+ext)
     }
 })
 

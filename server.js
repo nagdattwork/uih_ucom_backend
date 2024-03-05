@@ -12,6 +12,7 @@ const UserRoute=require("./routes/userRoutes")
 const ProjectBriefRoute=require("./routes/projectBriefRoutes")
 const documentUpload=require("./middleware/documentUpload")
 
+
 const multer = require("multer")
 const path = require("path")
 
@@ -77,3 +78,21 @@ app.delete(backendBase+'test/delete/:filename', (req, res) => {
   });
   
   
+
+  app.post(backendBase+'download', (req, res) => {
+    const filePath = req.body.url;
+    console.log(filePath);
+    // Check if the file exists
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+        if (err) {
+          
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        // Stream the file to the client
+        const fileStream = fs.createReadStream(filePath);
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Disposition', 'attachment; filename=' + path.basename(filePath));
+        fileStream.pipe(res);
+    });
+});

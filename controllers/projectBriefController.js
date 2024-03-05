@@ -271,7 +271,6 @@ const currentStageDashes = (req, res, next) => {
         }
     ];
     ProjectBrief.aggregate(pipeline).then((result) => {
-        console.log(result);
         res.json({
             result: result
         })
