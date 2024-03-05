@@ -18,8 +18,8 @@ const path = require("path")
 
 mongoose.connect("mongodb://localhost:27017/ucomdb",{useNewUrlParser:true,useunifiedTopology:true})
 
-// const backendBase="/server/"
-const backendBase="/"
+const backendBase="/server/"
+// const backendBase="/"
 
 const db=mongoose.connection
 
