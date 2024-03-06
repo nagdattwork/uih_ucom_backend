@@ -21,7 +21,17 @@ const index = (req, res, next) => {
 
 // Store a user
 const store = (req, res, next) => {
-    console.log(req.body)
+    // console.log(req.body)
+
+    let bool=false
+    User.findOne({email: req.body.email}).then((response) => {
+        console.log(response)
+        if(response!==null) 
+ {       res.json({
+            message:"UAE"
+        })
+ }   
+ else{
     bcrypt.hash(req.body.password, 10, (err, hashedPass) => {
         if (err) {
             res.json({ error: err })
@@ -61,6 +71,10 @@ const store = (req, res, next) => {
 
 
     })
+ }
+
+    })
+   
 
 }
 

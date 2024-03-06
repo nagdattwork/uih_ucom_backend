@@ -52,8 +52,9 @@ router.post('/fulliblists/add',ProjectFullIBListController.store)
 
 
 //Dashboard controller
-router.get('/currentstagedash',ProjectBriefController.currentStageDashes)
-router.get('/documentsdash',ProjectBriefController.documentsPercentDashes)
+router.post('/currentstagedash',ProjectBriefController.currentStageDashes)
+router.post('/documentsdash',ProjectBriefController.documentsPercentDashes)
+router.post('/fundingownerdash',ProjectBriefController.fundingOwnerDashes)
 
 
 module.exports=router

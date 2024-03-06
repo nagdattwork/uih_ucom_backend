@@ -2,7 +2,8 @@ const ProjectBriefModels = require("../models/projectBrief")
 const ProjectBrief = ProjectBriefModels.PrrojectBrief
 const bcrypt = require('bcryptjs')
 const jwt = require("jsonwebtoken")
-
+const mongoose=require('mongoose')
+const ObjectId = mongoose.Types.ObjectId;
 // All project returns
 const index = (req, res, next) => {
     ProjectBrief.find()
@@ -26,13 +27,12 @@ const index = (req, res, next) => {
 
 
 const projectsById = (req, res, next) => {
-    console.log({ _id: req.body.id })
     let condition = {}
 
     if (req.body?.type === 'basic') {
         condition = { owner: req.body.id }
     }
-    ProjectBrief.find(condition)
+    ProjectBrief.find(condition).sort({ _id: -1 })
         .populate('project_title.hw_sw_spp')
         .populate('project_title.project_manager')
         .populate('project_title.milestone_deliverables')
@@ -43,7 +43,6 @@ const projectsById = (req, res, next) => {
         .populate('owner')
         .populate('updated_by')
         .then((response) => {
-            console.log(response)
             res.json({
                 response: response
             })
@@ -59,7 +58,6 @@ const projectsById = (req, res, next) => {
 //Add a project
 const store = (req, res, next) => {
 
-    console.log(req.body.project_title.title)
     let projectBrief = new ProjectBrief({
         project_title: {
             title: req.body.project_title.title,
@@ -88,7 +86,12 @@ const store = (req, res, next) => {
             pdd_document: req.body?.documents?.pdd_document,
             draft_agreement: req.body?.documents?.draft_agreement,
             signed_agreement: req.body?.documents?.signed_agreement,
-            others: req.body?.documents?.others
+            others: req.body?.documents?.others,
+            pdd_details: req.body?.documents?.pdd_details,
+            da_ag_type: req.body?.documents?.da_ag_type,
+            da_ag_owner: req.body?.documents?.da_ag_owner,
+            sa_details: req.body?.documents?.sa_details,
+            other_details: req.body?.documents?.other_details,
         },
         system: {
             uih_service_engineer: req.body?.system?.uih_service_engineer
@@ -154,7 +157,13 @@ const store = (req, res, next) => {
 
 const updateStore = (req, res, next) => {
 
-    console.log(req.body.projectId)
+    console.log({
+        pdd_details: req.body?.documents?.pdd_details,
+        da_ag_type: req.body?.documents?.da_ag_type,
+        da_ag_owner: req.body?.documents?.da_ag_owner,
+        sa_details: req.body?.documents?.sa_details,
+        other_details: req.body?.documents?.other_details,
+    })
     const projectBrief = {
         project_title: {
             title: req.body.project_title.title,
@@ -182,7 +191,17 @@ const updateStore = (req, res, next) => {
             pdd_document: req.body?.documents?.pdd_document,
             draft_agreement: req.body?.documents?.draft_agreement,
             signed_agreement: req.body?.documents?.signed_agreement,
-            others: req.body?.documents?.others
+            others: req.body?.documents?.others,
+            
+            pdd_details: req.body?.documents?.pdd_details,
+            da_ag_type: req.body?.documents?.da_ag_type,
+            da_ag_owner: req.body?.documents?.da_ag_owner,
+            sa_details: req.body?.documents?.sa_details,
+            other_details: req.body?.documents?.other_details,
+
+
+            
+            
         },
         system: {
             uih_service_engineer: req.body?.system?.uih_service_engineer,
@@ -261,19 +280,46 @@ const deleteProjectById = (req, res, next) => {
 //Dashboard- Groupping by project status
 
 const currentStageDashes = (req, res, next) => {
-
-    const pipeline = [
+    let conditions = {}
+    
+    let pipeline = [
         {
             $group: {
                 _id: '$project_title.current_stage',
                 count: { $sum: 1 }
             }
+             
         }
     ];
+
+    if (req.body?._id) {
+        const objId=new  ObjectId(req.body._id)
+        conditions = { owner: objId }
+        pipeline = [
+            {
+                $match: conditions
+            },
+            {
+                $group: {
+                    _id: '$project_title.current_stage',
+                    count: { $sum: 1 }
+                }
+                 
+            },
+           
+        ];
+
+        // ProjectBrief.find(conditions).then(rest=>res.json({rest}))
+        // return
+    }
+
+    console.log(pipeline);
     ProjectBrief.aggregate(pipeline).then((result) => {
+        console.log(result)
         res.json({
             result: result
-        })
+        }
+        )
 
     })
 }
@@ -290,8 +336,8 @@ const documentsPercentDashes = (req, res, next) => {
 
 
     let conditions = {}
-    if (req.body?.userId) {
-        conditions = { owner: req.body.userId }
+    if (req.body?._id) {
+        conditions = { owner: req.body._id }
     }
     ProjectBrief.find(conditions).then((result) => {
         let pdd_count = 0
@@ -356,8 +402,41 @@ const documentsPercentDashes = (req, res, next) => {
     })
 }
 
+const fundingOwnerDashes = (req, res, next) => {
+
+
+    let conditions = {}
+    if (req.body?._id) {
+        conditions = { owner: req.body._id }
+    }
+    ProjectBrief.find(conditions).then((result) => {
+      let uii=0
+      let uih=0
+      let other=0
+
+      result.map(current => {
+
+        // console.log(current.fi_funding?.fi_funding_status)
+        if (current?.fi_funding?.fi_funding_status?.fi_funding_funding_person === "UII") {
+          uii++
+        }
+        if (current?.fi_funding?.fi_funding_status?.fi_funding_funding_person === "UIH") {
+          uih++
+        }
+        if (current?.fi_funding?.fi_funding_status?.fi_funding_funding_person === "OTHERS") {
+          other++
+        }
+      })
+
+      res.json({
+        uii,
+        uih,
+        other
+      })
+    })
+}
 
 
 module.exports = {
-    index, store, updateStore, projectsById, deleteProjectById, currentStageDashes, documentsPercentDashes
+    index, store, updateStore, projectsById, deleteProjectById, currentStageDashes, documentsPercentDashes,fundingOwnerDashes
 }

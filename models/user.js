@@ -28,15 +28,12 @@ const userSchema=new Schema({
     },
     region:{
         type:String,
-        required:true
     },
     specialization:{
         type:String,
-        required:true
     },
     country:{
         type:String,
-        required:true
     },
     approved:{
         type:Boolean,
