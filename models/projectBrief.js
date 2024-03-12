@@ -11,6 +11,47 @@ const hw_sw_spp_scheme = new Schema({
     license: String,
 
 }, { timestamps: true });
+
+// Milstone schema for outcomes
+const milstones_scheme = new Schema({
+    m1: String,
+    status: String,
+    update: String,
+   
+
+}, { timestamps: true });
+// Patents schema for outcomes
+
+const patents_scheme = new Schema({
+    patent: String,
+    author: String,
+
+    status: String,
+   
+
+}, { timestamps: true });
+// Articles schema for outcomes
+
+const articles_scheme = new Schema({
+    title: String,
+    author: String,
+
+    status: String,
+   
+
+}, { timestamps: true });
+
+
+// Abstracts schema for outcomes
+
+const abstracts_scheme = new Schema({
+    title: String,
+    author: String,
+
+    status: String,
+   
+
+}, { timestamps: true });
 //Ethics IRB approval Object Schema  -core Schema for project_title     - dont need controller
 const ethics_irb_schema = new Schema({
     approved: Boolean,
@@ -128,6 +169,17 @@ const projectBriefSchema = new Schema({
         // fi_who_funded:String
 
 
+    },
+    outcomes:{
+        milstones:[milstones_scheme],
+        milstones_docs:String,
+        patents:[patents_scheme],
+        patents_docs:String,
+        articles:[articles_scheme],
+        articles_docs:String,
+        abstracts:[abstracts_scheme],
+        abstracts_docs:String,
+        
     },
     documents: {
         pdd_document: String,

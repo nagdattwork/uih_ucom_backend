@@ -96,7 +96,13 @@ const store = (req, res, next) => {
         system: {
             uih_service_engineer: req.body?.system?.uih_service_engineer
         },
-        owner: req.body?.owner
+        owner: req.body?.owner,
+        outcomes:{
+            milstones_docs:req.body.outcomes.milstones_docs,
+            patents_docs:req.body.outcomes.patents_docs,
+            articles_docs:req.body.outcomes.articles_docs,
+            abstracts_docs:req.body.outcomes.abstracts_docs,
+        }
 
 
 
@@ -136,6 +142,25 @@ const store = (req, res, next) => {
     });
 
 
+    //outcomes
+
+    req.body?.outcomes?.milstones?.forEach(mil => {
+        projectBrief.outcomes.milstones.push(mil)
+    });
+
+    req.body?.outcomes?.patents?.forEach(mil => {
+        projectBrief.outcomes.patents.push(mil)
+    });
+    req.body?.outcomes?.articles?.forEach(arti => {
+        projectBrief.outcomes.articles.push(arti)
+    });
+    req.body?.outcomes?.abstracts?.forEach(arti => {
+        projectBrief.outcomes.abstracts.push(arti)
+    });
+
+
+
+
     // req.body?.system?.uih_service_engineer?.forEach(uih_service_engineer => {
     //     projectBrief.system.uih_service_engineer.push(uih_service_engineer)
     // });
@@ -157,13 +182,7 @@ const store = (req, res, next) => {
 
 const updateStore = (req, res, next) => {
 
-    console.log({
-        pdd_details: req.body?.documents?.pdd_details,
-        da_ag_type: req.body?.documents?.da_ag_type,
-        da_ag_owner: req.body?.documents?.da_ag_owner,
-        sa_details: req.body?.documents?.sa_details,
-        other_details: req.body?.documents?.other_details,
-    })
+        // console.log(req.body.outcomes)
     const projectBrief = {
         project_title: {
             title: req.body.project_title.title,
@@ -210,6 +229,20 @@ const updateStore = (req, res, next) => {
         },
         owner: req.body?.owner,
         updated_by: req.body?.updated_by,
+        outcomes:{
+            milstones:[],
+            patents:[],
+            articles:[],
+            abstracts:[],
+            abstracts_docs:req.body.outcomes.abstracts_docs,
+            articles_docs:req.body.outcomes.articles_docs,
+            milstones_docs:req.body.outcomes.milstones_docs,
+            patents_docs:req.body.outcomes.patents_docs,
+
+
+
+
+        }
     }
 
     //Project Titles
@@ -244,6 +277,25 @@ const updateStore = (req, res, next) => {
     req.body?.system?.full_ib_list?.forEach(full_ib_list => {
         projectBrief.system.full_ib_list.push(full_ib_list)
     });
+
+
+    //outcomes
+    req.body?.outcomes?.milstones?.forEach(mil => {
+        console.log(mil,"inside mil")
+
+        projectBrief.outcomes.milstones.push(mil)
+    });
+
+    req.body?.outcomes?.patents?.forEach(mil => {
+        projectBrief.outcomes.patents.push(mil)
+    });
+    req.body?.outcomes?.articles?.forEach(arti => {
+        projectBrief.outcomes.articles.push(arti)
+    });
+    req.body?.outcomes?.abstracts?.forEach(arti => {
+        projectBrief.outcomes.abstracts.push(arti)
+    });
+
 
     ProjectBrief.findByIdAndUpdate(req.body.projectId, {
         $set:

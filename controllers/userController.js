@@ -8,6 +8,7 @@ const fs = require('fs');
 //get all users
 const index = (req, res, next) => {
     User.find()
+    .sort({ _id: -1 })
         .then((response) => {
             res.json({
                 response: response
