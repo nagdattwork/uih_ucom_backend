@@ -228,20 +228,20 @@ const login = (req, res, next) => {
                 bcrypt.compare(password, user.password, (err, result) => {
                     if (err) {
                         res.json({
-                            message: "login error"
+                            message: "lr"
                         })
                     }
                     if (result) {
                         let token = jwt.sign({ user: user.name }, 'uCom_uih_project', { expiresIn: '1hr' })
                         res.json({
-                            message: "Login successfull",
+                            message: "ls",
                             token,
                             user
                         })
                     }
                     else {
                         res.json({
-                            message: "Password does not matched",
+                            message: "wp",
 
                         })
                     }
@@ -249,7 +249,7 @@ const login = (req, res, next) => {
             }
             else {
                 res.json({
-                    message: 'No user Found'
+                    message: 'nuf'
                 })
             }
         })

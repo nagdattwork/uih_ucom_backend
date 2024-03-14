@@ -10,6 +10,8 @@ require('dotenv').config()
 
 const UserRoute=require("./routes/userRoutes")
 const ProjectBriefRoute=require("./routes/projectBriefRoutes")
+const ImportantDocsRoute=require("./routes/importantDocsRoutes")
+
 const documentUpload=require("./middleware/documentUpload")
 
 
@@ -57,6 +59,9 @@ app.listen(PORT,()=>{
 app.use(backendBase+'api/users',UserRoute)
 
 app.use(backendBase+'api/projects',ProjectBriefRoute)
+
+app.use(backendBase+'api/important_docs',ImportantDocsRoute)
+
 
 
 //delete files
