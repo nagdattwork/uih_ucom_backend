@@ -110,7 +110,7 @@ app.delete(backendBase+'test/delete/:filename', (req, res) => {
 
 
 // Proxy middleware setup
-app.use('/api', createProxyMiddleware({
+app.use('/https://open.larksuite.com', createProxyMiddleware({
   target: 'https://open.larksuite.com',
   changeOrigin: true,
   pathRewrite: {
