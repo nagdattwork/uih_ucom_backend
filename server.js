@@ -1,6 +1,8 @@
 const express=require("express")
 const mongoose=require("mongoose")
 const morgan=require("morgan")
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
 const bodyParser = require("body-parser")
 const cors=require('cors')
 const fs = require('fs');
@@ -101,3 +103,17 @@ app.delete(backendBase+'test/delete/:filename', (req, res) => {
         fileStream.pipe(res);
     });
 });
+
+
+//lark proxy
+
+
+
+// Proxy middleware setup
+app.use('/api', createProxyMiddleware({
+  target: 'https://open.larksuite.com',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/https://open.larksuite.com': '',
+  },
+}));
